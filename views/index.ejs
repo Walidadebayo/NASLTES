@@ -217,62 +217,6 @@
             </div>
         </div>
     </section>
-    <% for(const ticket of tickets) {%>
-        <div class="modal fade" id="ticketModal<%= ticket.id %>" tabindex="-1" data-bs-backdrop="static"
-            data-bs-keyboard="false">
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title text-primary">Book your Ticket</h4>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <% if (ticket.table) { %>
-                        <h6 class="ms-2">Note: You will see the amount of the table you picked in payment page</h6>
-                        <% } %>
-                            <h4 style="color: gold; margin-left: 15px; text-transform: uppercase;"><strong>
-                                    <%= ticket.name %>
-                                </strong></h4>
-                            <form action="/book/ticket/" method="post">
-                                <div class="modal-body">
-                                    <div class="form-group">
-                                        <input type="hidden" name="modal" value="" class="form-control"
-                                            id="modalError<%= ticket.id %>">
-                                        <input type="hidden" name="ticket_id" value="<%= ticket.id %>"
-                                            class="form-control">
-                                        <label for="name" class="form-label text-dark">Name</label>
-                                        <input type="text" class="form-control" name="full_name" id="name"
-                                            placeholder="Input your Name">
-                                        <label for="email" class="form-label text-dark">Email</label>
-                                        <input type="email" class="form-control" name="client_email" id="email"
-                                            placeholder="Input your Email">
-                                        <label for="phone" class="form-label text-dark">Phone</label>
-                                        <input type="text" class="form-control" name="phone" id="phone"
-                                            placeholder="Enter your number">
-                                        <% var tables=JSON.parse(ticket.tables) %>
-                                            <% if (ticket.table) { %>
-                                                <label class="form-check-label text-dark pt-3">Table Type</label><br>
-                                                <select id="" name="table_id" class="form-control form">
-                                                    <option value="select" disabled>Select Table</option>
-                                                    <% for( let i=0; i < tables.length; i++ ) { %>
-                                                        <option value="<%= tables[i] %>">
-                                                            <%= tables[i] %> Table
-                                                        </option>
-                                                        <% } %>
-                                                </select>
-                                                <% } %>
 
-                                    </div>
-                                    <div class="modal-footer mt-2">
-                                        <button type="submit" class="btn btn-primary">Book Now</button>
-                                    </div>
-                                </div>
-                            </form>
-                </div>
-            </div>
-        </div>
-        <script>
-            $('#modalError<%= ticket.id %>').val($('#ticketModal<%= ticket.id %>').attr('id'))
-        </script>
-        <% } %>
 
             <%- include('./includes/footer.ejs') %>

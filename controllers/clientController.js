@@ -8,24 +8,7 @@ const Tables = require("../models/tables")
 const { query } = require("../models/connection")
 
 let index= async(req, res) =>{
-    let galleries = await Gallery.fetch()
-    var firstImg = galleries[0]
-    let events = await Event.fetch()
-    let tickets = await Ticket.fetch()
-    for (const ticket of tickets) {
-        if (ticket.table !== null) {
-            var tables = ticket.table;
-            var table = "'" + tables.join("','") + "'";
-            // console.log(table);
-            let sql =  `SELECT price, name FROM tables WHERE name IN (${table})`
-            var tablePrice = await query(sql)
-            var tab={}
-            for (const tol of tablePrice) {
-                tab[tol.name] = tol.price
-            }
-        }
-    }
-    res.render('index', {galleries, tickets, events, firstImg, tab})
+    res.render('index')
 }
 let contact  = async (req, res) => {
     let contact = new Contact(req.body)

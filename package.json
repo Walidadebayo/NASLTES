@@ -18,14 +18,23 @@
     "req-flash": "^0.0.3",
     "winston-daily-rotate-file": "^3.5.1"
   },
-  "name": "cdf",
+  "name": "nasltes",
   "version": "1.0.0",
   "main": "app.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+  "engines": {
+    "node": ">=18"
   },
-  "author": "",
+  "scripts": {
+    "start:dev": "nodemon",
+    "build": "npm install",
+    "start": "node app.js",
+    "test": "node app.js"
+  },
+  "author": "walid adebayo",
   "license": "ISC",
   "keywords": [],
-  "description": ""
+  "description": "",
+  "devDependencies": {
+    "nodemon": "^2.0.20"
+  }
 }
