@@ -1,0 +1,136 @@
+<%- include('./includes/admin-header') %>
+<head>
+	<link rel="stylesheet" type="text/css" href="/bootstrap-5.2.0-dist/css/bootstrap5dataTables.min.css">
+	<script type="text/javascript" language="javascript" src="/js/jquerydataTables.min.js"></script>
+	<script type="text/javascript" language="javascript" src="/bootstrap-5.2.0-dist/js/bootstrap5dataTables.min.js"></script>
+	<script type="text/javascript">
+	
+    $(document).ready(function() {
+	$('#tickets').DataTable(
+    {
+      "order": [[1, 'asc']],//order column in descending order.
+          "columnDefs": [
+            { "type": "date", "targets": [1] }//date column formatted like "03/23/2018 10:25:13 AM".
+          ],
+          "pageLength": 5,
+          stateSave: true,
+  stateSaveCallback: function(settings,data) {
+      localStorage.setItem( 'DataTables_' + settings.sInstance, JSON.stringify(data) )
+    },
+  stateLoadCallback: function(settings) {
+    return JSON.parse( localStorage.getItem( 'DataTables_' + settings.sInstance ) )
+    }
+        }
+  );
+} );
+</script>
+<style>
+   .fa-copy{
+        /* display: none; */
+        color: #6dbd28;
+      }
+      .reference:hover .fa-copy{
+        display: block;
+      }
+</style>
+</head>
+
+    <section class="section container dashboard mt-5" >
+      <div class="row">
+                
+        <div class="col-12">
+            <div class="card recent-sales overflow-auto">
+
+            
+              <div class="card-body">
+                
+                  <div class=" col-md-10"><h5 class="card-title">Clients</h5></div>
+                  
+                  
+                <table class="table table-borderless" id="tickets">
+                  <thead>
+                    <th>No</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Ticket</th>
+                    <th>Ticket No</th>
+                    <th>Table</th>
+                    <th>Amount paid</th>
+                    <th>Payment</th>
+                    <th>Reference No</th>
+                    <th>Date</th>
+                  </thead>
+                  <tbody>
+                      <% for(const client of clients ) {%>                          
+                            <td><%= client.id %></td>
+                            <td><%= client.full_name %></td>
+                            <td><%= client.client_email %></td>
+                            <td><%= client.phone %></td>
+                            <td><%= client.ticket.type %></td>
+                            <td><%= client.ticket_no %></td>
+                            <% if (client.table_id) { %>
+                              <td><%= client.table %></td>
+                            <% } else{%>
+                              <td>No Table for <%= client.ticket.type %></td>
+                            <% } %>
+                            <% if (client.table_id) { %>
+                              <td><%= client.table.price.toLocaleString('en-Ng', {style:'currency', currency:'NGN'})%></td>
+                            <% } else{%>
+                              <td><%= (client.ticket.price).toLocaleString('en-Ng', {style:'currency', currency:'NGN'}) %></td>
+                            <% } %>
+                            <td>
+                              <%= client.payment %>
+                            </td>
+                            <td class="reference">
+                              <span id="reference<%= client.id %>"><%= client.reference_no %></span>
+                                <% if (client.reference_no !== 'transaction failed' && client.reference === null) { %>
+                                  <i class="fa fa-copy"
+                                    onclick="copyToClipboard('#reference<%= client.id %>'); flash('success', 'Copied Reference')"
+                                    style="font-size: 15px; cursor: pointer;"></i>
+                                  <% } %>
+                            </td>
+                          <td><%= (client.created_at).toDateString() %></td>
+                          </tr>
+                        <% } %>
+                  </tbody>
+                </table>
+
+              </div>
+
+            </div>
+          </div><!-- End Recent Sales -->
+
+            </div>
+
+    </section>
+
+  </main><!-- End #main -->
+  
+<!-- table -->
+  
+<script>
+  function copyToClipboard(element) {
+    var $temp = $("<input>");
+    $("body").append($temp);
+    $temp.val($(element).text()).select();
+    document.execCommand("copy");
+    $temp.remove();
+  };
+
+</script>
+<script>
+  function addTable() {
+    $('#tables').removeClass('d-none')
+    $('#removeTable').removeClass('d-none')
+    $('#tableLabel').removeClass('d-none')
+  }
+  function removeTable() {
+      $('#tableLabel').addClass('d-none')
+        $("#tables").addClass('d-none')
+    }
+  $('#modalError').val($('#addTicketModal').attr('id'))
+  $('#modalError2').val($('#addTableModal').attr('id'))
+</script>
+<%- include('./includes/admin-footer') %>
+      

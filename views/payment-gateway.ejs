@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <link href="https://fonts.gstatic.com" rel="preconnect">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Nunito:300,300i,400,400i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+    <link rel="stylesheet" href="/css/cdf.css">
+    <link rel="stylesheet" href="/bootstrap-5.2.0-dist/css/bootstrap.min.css">
+    <link rel="shortcut icon" href="/img/IMG-20220915-WA0033.jpg" type="image/x-icon">
+    <link rel="stylesheet" href="/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="/bootstrap-icons/bootstrap-icons.css">
+    <script src="/js/jquery-3.6.0.min.js"></script>
+    <style>
+        #total-pay{
+          -webkit-box-shadow: 0px -4px 3px rgba(1, 41, 112, 0.1);;
+          -moz-box-shadow: 0px -4px 3px rgba(1, 41, 112, 0.1);;
+          box-shadow: 0px -4px 3px rgba(1, 41, 112, 0.1);;
+        }
+    </style>
+</head>
+<body>
+    <div class="preloader is-active">
+        <div class="preloader__wrap">
+    
+          <div class="spinner text-info"></div>
+        </div>
+    </div>
+    <section>
+        <nav class="navbar navbar-expand-lg navbar-light shadow py-3">
+            <div class="container ">
+                <a href="/" class="navbar-brand "
+                    style="font-size: 40px; color: #afc4d6; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;"><strong>CDF</strong>
+                    <span class="im"><img src="/img/IMG-20220915-WA0033.jpg" alt=""></span></a>
+                <button class="navbar-toggler bg-primary" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="nav">
+                    <ul class="navbar-nav ms-auto navtext px-5">
+                        <li class="nav-item ">
+                            <a href="#home" class="nav-link" style="color: #afc4d6;"><strong>Home</strong></a>
+                        </li>
+                       
+                        <li class="nav-item">
+                            <a href="#Event" class="nav-link" style="color: #afc4d6;"><strong>Events</strong></a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#Ticket" class="nav-link" style="color: #afc4d6"><strong>Tickets</strong></a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="#Contact" class="nav-link" style="color: #afc4d6"><strong>Contacts</strong></a>
+                        </li>
+                       
+                    </ul>
+                </div>
+
+            </div>
+        </nav>
+    </section>
+<main class="mt-5 pt-4">
+    <div class="container">
+        <div class="row mt-1">
+            <div class="col-sm-9">
+                <p class="text-muted dark2">Payment SUMMARY</p>
+            </div>
+            <div class="col-sm-3 text-primary">
+                <P data-bs-target="#cartModal" data-bs-toggle="modal" style="cursor: pointer;">SEE DETAILS <i class="bi bi-chevron-right"></i></P>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-9">
+                        <h5 class="card-title dark2">TOTAL TO PAY</h5>
+                    </div>
+                    <div class="col-sm-3">
+                        <p class="card-title dark2"><%= (price).toLocaleString('en-Ng',{style:'currency', currency:'NGN'}) %></p>
+                    </div>
+                </div>
+            </div>  
+        </div>
+        <div class="card mb-4 mb-lg-0 mt-4">
+            <div class="card-body mt-3">
+                <p><strong>We accept</strong></p>
+                <img class="me-2" width="200vw"
+                    src="/img/visa-mastercard_logo.png"
+                    alt="Card we accept" />
+            </div>
+        </div>
+        <div class="mt-3 card">
+          <a href="<%= checkout_payment %>" class="btn btn-primary">PAY NOW: <%= (price).toLocaleString('en-Ng', {style:'currency', currency:'NGN'}) %></a>
+        </div>
+
+          </div>
+          </main>
+      <!-- Heading -->
+
+      <div class="modal fade" id="cartModal" tabindex="-1" role="dialog" aria-labelledby="cartModalLabel"
+      aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="cartModalLabel">Ticket Detail</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            </button>
+          </div>
+          <div class="modal-body">
+            <%# for (const key in cart) { %>
+            <div class="row">
+              <div class="col-sm-9">
+                <p><%= ticket_name %></p>
+              </div>
+              <div class="col-sm-3">
+                  <p><%= (price).toLocaleString('en-Ng', {style:'currency', currency:'NGN'}) %></p>
+                </div>
+            </div>
+            <% if (table_name !== undefined) { %>
+              <div class="">
+                <p><b>Table: </b><%= (table_name).toLocaleString('en-Ng', {style:'currency', currency:'NGN'}) %></p>
+              </div>
+            <% } %>
+            <hr>  
+            <%# } %>
+            <div class="row">
+              <div class="col-sm-9">
+                <h6>SUBTOTAL</h6>
+              </div>
+              <div class="col-sm-3">
+                <p><%= (price).toLocaleString('en-Ng', {style:'currency', currency:'NGN'}) %></p>
+              </div>
+            </div>
+          </div>
+          <div class="mt-3" id="total-pay">
+            <div class="row mt-3">
+              <div class="col-sm-8 ms-1">
+                <h5>TOTAL TO PAY</h5>
+              </div>
+              <div class="col-sm-3 ms-1">
+                <p><%= (price).toLocaleString('en-Ng', {style:'currency', currency:'NGN'}) %></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <footer class="container text-center mt-5">
+      <b>Please note: </b>CDF will never ask you for your password, PIN, CVV or full card details over the phone or via email.
+  Need help? Contact us on <a href="/#Contact">http://localhost:4000/</a>
+  </footer>
+</body>
+</html>
+<script src="/js/main.js"></script>
+<script src="/bootstrap-5.2.0-dist/js/bootstrap.bundle.min.js"></script>

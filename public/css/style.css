@@ -1,0 +1,243 @@
+* {
+    margin: 0px;
+    padding: 0px;  
+}
+.body::before{
+    content: " ";
+    display: block;
+    height: 100px;
+}
+
+.im img {
+    width: 50px;
+    height: 40px;
+    border: #303841;
+}
+
+#pics {
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.carousel img{
+  width: 100%;
+  height: 850px;
+}
+
+#output {
+  border-radius: 50%;
+  height: 195px;
+  width: 195px;
+  border: 1px solid blue;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+}
+
+nav {
+    background-color: #303841;
+    position: -webkit-sticky; /* Safari */
+    position: sticky;
+    top: 0; 
+}
+
+.slideshow img {
+    height: 100vh;
+    width: 100%;
+    object-fit: fill;
+
+}
+
+.eve {
+    height: 50vh;
+}
+
+.list ul {
+    list-style-type: none;
+    margin: 5px;
+}
+
+.list li {
+    display: inline-block;
+    padding: 3px;
+}
+
+.list i:hover {
+    background-color: #1979d6;
+    color: white;
+}
+
+.list i {
+    color: #afc4d6;
+    border: 2px solid #afc4d6;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+
+.head {
+    color: #2c4e6e;
+}
+
+.about {
+    color: #1977cc;
+}
+
+.contact {
+    list-style-type: none;
+}
+
+.contact i {
+    border: 1px solid #d6e9fa;
+    border-radius: 50%;
+    padding: 14px;
+    background-color: #d6e9fa;
+    color: #1979d6;
+    font-size: 22px;
+}
+
+.contact i:hover {
+    color: white;
+    background-color: #1979d6;
+}
+
+.footer {
+    background-color: #303841;
+}
+/*--------------------------------------------------------------
+  # Page loader
+  --------------------------------------------------------------*/
+  .preloader.is-active {
+    width: 100%;
+    text-align: center;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 1000000;
+    background: #ecf1f9;
+    display: block;
+   }
+  
+  .preloader {
+    display: none;
+   }
+    .preloader__wrap {
+      display: -ms-flexbox;
+      display: flex;
+      -ms-flex-align: center;
+          align-items: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+      height: 100%;
+     }
+
+   
+  
+  
+  /* SPINNER ANIMATION */
+  .spinner {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    background-color: blue;
+    border-radius: 100%;  
+    -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
+    animation: sk-scaleout 1.0s infinite ease-in-out;
+  }
+  
+  @-webkit-keyframes sk-scaleout {
+    0% { -webkit-transform: scale(0) }
+    100% {
+      -webkit-transform: scale(1.0);
+      opacity: 0;
+    }
+  }
+  
+  @keyframes sk-scaleout {
+    0% { 
+      -webkit-transform: scale(0);
+      transform: scale(0);
+    } 100% {
+      -webkit-transform: scale(1.0);
+      transform: scale(1.0);
+      opacity: 0;
+    }
+  }
+  .dashboard .recent-sales {
+    font-size: 14px;
+  }
+  
+  .dashboard .recent-sales .table thead {
+    background: #f6f6fe;
+  }
+  
+  .dashboard .recent-sales .table thead th {
+    border: 0;
+  }
+  
+  .dashboard .recent-sales .dataTable-top {
+    padding: 0 0 10px 0;
+  }
+  
+  .dashboard .recent-sales .dataTable-bottom {
+    padding: 10px 0 0 0;
+  }
+  .dashboard .recent-sales img {
+    border-radius: 5px;
+    max-width: 60px;
+  }
+  .logo {
+    line-height: 1;
+  }
+  
+  @media (min-width: 1200px) {
+    .logo {
+      width: 280px;
+    }
+  }
+  
+  .logo img {
+    max-height: 36px;
+    margin-right: 6px;
+  }
+  
+  .logo span {
+    font-size: 26px;
+    font-weight: 700;
+    color: #012970;
+    font-family: "Nunito", sans-serif;
+  }
+  a{
+    text-decoration: none;
+  }
+  .card {
+    margin-bottom: 30px;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0px 0 30px rgba(1, 41, 112, 0.1);
+  }
+  .nav-tabs-bordered {
+    border-bottom: 2px solid #ebeef4;
+  }
+  
+  .nav-tabs-bordered .nav-link {
+    margin-bottom: -2px;
+    border: none;
+    color: #2c384e;
+  }
+  
+  .nav-tabs-bordered .nav-link:hover,
+  .nav-tabs-bordered .nav-link:focus {
+    color: #4154f1;
+  }
+  
+  .nav-tabs-bordered .nav-link.active {
+    background-color: #fff;
+    color: #4154f1;
+    border-bottom: 2px solid #4154f1;
+  }
+
+  

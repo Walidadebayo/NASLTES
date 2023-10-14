@@ -1,0 +1,141 @@
+<%- include('./includes/admin-header') %>
+<head>
+	<link rel="stylesheet" type="text/css" href="/bootstrap-5.2.0-dist/css/bootstrap5dataTables.min.css">
+	<script type="text/javascript" language="javascript" src="/js/jquerydataTables.min.js"></script>
+	<script type="text/javascript" language="javascript" src="/bootstrap-5.2.0-dist/js/bootstrap5dataTables.min.js"></script>
+	<script type="text/javascript">
+	
+    $(document).ready(function() {
+	$('#admins').DataTable(
+    {
+          stateSave: true,
+  stateSaveCallback: function(settings,data) {
+      localStorage.setItem( 'DataTables_' + settings.sInstance, JSON.stringify(data) )
+    },
+  stateLoadCallback: function(settings) {
+    return JSON.parse( localStorage.getItem( 'DataTables_' + settings.sInstance ) )
+    }
+        }
+  );
+} );
+</script>
+
+</head>
+
+    <section class="section container dashboard mt-5" >
+      <div class="row">
+                
+        <div class="col-12">
+            <div class="card recent-sales overflow-auto">
+
+            
+              <div class="card-body">
+                
+                <div class="row">
+                  <div class=" col-md-10"><h5 class="card-title">Admin</h5></div>
+                  <div class=" col-md-2 mt-3"><button class="btn btn-sm btn-primary mb-3" data-bs-target="#addAdminModal" data-bs-toggle="modal" >Add Admin</button></div>
+                  
+                </div>                    
+                  
+                <table class="table table-borderless" id="admins">
+                  <thead>
+                    <th>Name</th>
+                    <th>Gender</th>
+                    <th>Email</th>
+                    <th>phone</th>
+                    <th>Account State</th>
+                    <% if (logAdmin.owner !== null) { %>
+                    <th>Delete</th>
+                  <% } %> 
+                  </thead>
+                  <tbody>
+                      <% for(const admin of admins) {%>
+                          <tr>
+                            <td><%= admin.name %></td>
+                            <td><%= admin.gender %></td>
+                            <td><%= admin.email %></td>
+                            <td><%= admin.phone %></td>
+                            <td><%= admin.account_state %></td>
+                            <% if (logAdmin.owner !== null) { %>
+                              <td><a href="/admin/delete-admin/<%= admin.id %>"><i class="bi bi-trash text-danger"></i></a></td>
+                            <% } %>
+                          </tr>
+                        <% } %>
+                  </tbody>
+                </table>
+
+              </div>
+
+            </div>
+          </div><!-- End Recent Sales -->
+
+            </div>
+
+
+
+    </section>
+
+  </main><!-- End #main -->
+  <div class="modal fade" id="addAdminModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false" role="dialog" aria-labelledby="addAdminModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addAdminModalLabel">Add Admin</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+        </button>
+      </div>
+      <div class="modal-body">
+      <form action="/admin/add-admin/" method="post">
+        <input type="hidden" name="modal" value="" class="form-control" id="modalError">
+        <div class="row mb-3">
+            <label for="first_name" class="col-md-4 col-lg-3 col-form-label dark2">First Name</label>
+            <div class="col-md-8 col-lg-9">
+                <input type="text" class="form-control" id="first_name"  name="first_name" placeholder="Enter First Name">
+            </div>
+          </div>
+        <div class="row mb-3">
+            <label for="last_name" class="col-md-4 col-lg-3 col-form-label dark2">Last Name</label>
+            <div class="col-md-8 col-lg-9">
+                <input type="text" class="form-control" id="last_name"  name="last_name" placeholder="Enter Last Name">
+            </div>
+          </div>
+          <div class="row mb-3">
+            <label  class="col-md-4 col-lg-3 col-form-label dark2">Gender</label>
+            <div class="col-md-2 col-lg-3">
+                <input type="radio"  value="Male" class="form-check-input" id="male"  name="gender">
+                <label for="male"> Male</label>
+            </div>
+            <div class="col-md-4 col-lg-4">
+                <input type="radio"  value="Female" class="form-check-input" id="female"  name="gender">
+                <label for="female">Female</label>
+            </div>
+          </div>
+        <div class="row mb-3">
+            <label for="email" class="col-md-4 col-lg-3 col-form-label dark2">Email</label>
+            <div class="col-md-8 col-lg-9">
+                <input type="text" class="form-control" id="email"  name="email" placeholder="Enter Email">
+            </div>
+          </div>
+        <div class="row mb-3">
+            <label for="phone" class="col-md-4 col-lg-3 col-form-label dark2">Phone</label>
+            <div class="col-md-8 col-lg-9">
+                <input type="text" class="form-control" id="phone"  name="phone" placeholder="Enter Phone number">
+            </div>
+          </div>
+          <div class="text-end mt-5">
+              <button type="submit" class="btn  btn-primary">Submit</button>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $('#modalError').val($('#addAdminModal').attr('id'))
+</script>
+<%- include('./includes/admin-footer') %>
+      

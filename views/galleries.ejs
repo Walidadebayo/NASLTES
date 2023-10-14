@@ -1,0 +1,118 @@
+<%- include('./includes/admin-header') %>
+<head>
+	<link rel="stylesheet" type="text/css" href="/bootstrap-5.2.0-dist/css/bootstrap5dataTables.min.css">
+	<script type="text/javascript" language="javascript" src="/js/jquerydataTables.min.js"></script>
+	<script type="text/javascript" language="javascript" src="/bootstrap-5.2.0-dist/js/bootstrap5dataTables.min.js"></script>
+	<script type="text/javascript">
+	
+    $(document).ready(function() {
+	$('#tickers').DataTable(
+    {
+          stateSave: true,
+  stateSaveCallback: function(settings,data) {
+      localStorage.setItem( 'DataTables_' + settings.sInstance, JSON.stringify(data) )
+    },
+  stateLoadCallback: function(settings) {
+    return JSON.parse( localStorage.getItem( 'DataTables_' + settings.sInstance ) )
+    }
+        }
+  );
+} );
+</script>
+
+</head>
+
+    <section class="section container dashboard mt-5" >
+      <div class="row">
+                
+        <div class="col-12">
+            <div class="card recent-sales overflow-auto">
+
+            
+              <div class="card-body">
+                
+                 
+                <div class="row">
+                  <div class=" col-md-10"><h5 class="card-title">Galleries</h5></div>
+                  <div class=" col-md-2 mt-3"><button class="btn btn-sm btn-primary mb-3" 
+                    onclick="$('#form').attr('action','/admin/add-image/'); $('#output').attr('src', '/img/cat.png')" data-bs-target="#uploadModal" data-bs-toggle="modal" >Add Image</button></div>
+                  
+                </div>                    
+                  
+                  
+                <table class="table table-borderless" id="tickers">
+                  <thead>
+                    <th>Image</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                  </thead>
+                  <tbody>
+                      <% for(const gallery of galleries) {%>
+                          <tr>
+                            <th scope="row">
+                              <% if (gallery.image) { %>
+                                  <img src="/<%= gallery.image %>" alt="">
+                              <% } else{%>
+                              <img src="/img/cat.png" alt="">
+                              <% } %> 
+                          </th>
+                            <td>
+                              <!-- <a href="/admin/edit-image/<%= gallery.id %>" > -->
+                              <i  data-bs-target="#uploadModal" style="cursor:pointer ;" 
+                              data-bs-toggle="modal" 
+                              onclick="$('#form').attr('action','/admin/edit-image/<%= gallery.id %>'); 
+                              $('#output').attr('src', '<% if (gallery.image) { %> /<%= gallery.image %><% } else{%> /img/cat.png <% } %>')"
+                                 class="bi bi-pen-fill text-primary"></i>
+                            <!-- </a> -->
+                            </td>
+                            <td><a href="/admin/delete-image/<%= gallery.id %>"><i class="bi bi-trash text-danger"></i></a></td>
+                          </tr>
+                        <% } %>
+                  </tbody>
+                </table>
+
+              </div>
+
+            </div>
+          </div><!-- End Recent Sales -->
+
+            </div>
+
+
+
+    </section>
+  </main><!-- End #main -->
+  <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="uploadModalLabel">Upload an image</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+          </button>
+        </div>
+        <form action="/admin/add-image/" id="form" method="post" enctype="multipart/form-data">
+          <div class="modal-body">
+        <div id="pics" class="form-group">
+            <p class="text-center d-block mx-auto"><input required type="file" class="form-control"  accept="image/*" name="passport" id="image" onchange="loadFile(event)" style="display: none;"></p>
+            <p class="text-center d-block mx-auto">
+                      <label for="image" style="cursor: pointer;">
+                        <img id="output" width="100px" class="img-fluid"
+                        src="/img/cat.png" alt="image">
+                      </label>                        
+                      </p>
+                      <p style="font-size: 25px; text-align: center;">Gallery Picture</p>
+                    </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-outline-primary">Upload Image</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cancel</button>
+                </div>
+              </form>
+    </div>
+</div>
+</div>
+  
+<script>
+  $('#modalError2').val($('#addTableModal').attr('id'))
+</script>
+<%- include('./includes/admin-footer') %>
+      

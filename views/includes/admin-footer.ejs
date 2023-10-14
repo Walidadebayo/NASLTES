@@ -1,0 +1,51 @@
+</body>
+</html>
+    <script src="/bootstrap-5.2.0-dist/js/bootstrap.bundle.js"></script>
+<script src="/js/main.js"></script>
+<script src="/js/image.js"></script>
+<% for (const name in locals.formBody) { %>
+    <script>
+  <% if (locals.formErrors[name]) { %>
+            $('[name="<%= name %>"]').addClass('is-invalid');
+            $('[name="<%= name %>"]').after('<div class="invalid-feedback" style="font-size: 13px;"><%= locals.formErrors[name].msg %></div>');
+  <% } %>
+  <% if (locals.formModalErrorId) { %>
+        $(function () {
+            $('#<%= locals.formModalErrorId %>').modal('show');
+        });
+    <% } %>
+  var elem = $('[name="<%= name %>"]');
+        //check if the element is a input radio or checkbox
+        if (elem.is('input[type="radio"]') || elem.is('input[type="checkbox"]')) {
+            //check if the element is checked
+            elem = $('[name="<%= name %>"][value="<%= locals.formBody[name] %>"]').attr('checked', true);
+        } else {
+            elem.val("<%= locals.formBody[name] %>");
+        }
+    </script>
+    <% } %>
+
+<% if (locals.flash) { %>
+    <% for (const type in locals.flash) { %>
+        <% if (type === 'success') { %>
+            <div id="flash-message" class="alert alert-<%- type %> col-lg-6 col-md-12 shadow-lg w-50 mx-auto fixed-top mt-5 alert-dismissible"
+                style="border-left:#155724 5px solid; border-radius: 0px;">
+                  <button class="btn-close" data-bs-dismiss="alert"></button>
+                  <i class="bi bi-shield-fill-check"></i> <%- locals.flash[type] %>
+              </div>
+              <% } else{ %>
+                  <div id="flash-message" class="alert alert-<%- type %> col-lg-6 col-md-12 shadow-lg w-50 mx-auto fixed-top mt-5 alert-dismissible"
+                    style="border-left:#721C24 5px solid; border-radius: 0px">
+                    <i class="bi bi-exclamation-circle-fill"></i>
+                    <button class="btn-close" data-bs-dismiss="alert"></button>
+                      <%- locals.flash[type] %>
+                  </div>
+        <% } %> 
+          <script>
+              $(window).on('load',function(){
+                  $('#flash-message').show();
+                  $('#flash-message').delay(3500).fadeOut();
+              });
+              </script>
+    <% } %> 
+    <% } %>

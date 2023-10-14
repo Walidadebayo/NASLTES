@@ -1,0 +1,28 @@
+nav {
+    background-color: #303841;
+}
+
+
+.im img {
+    width: 90px;
+    height: 70px;
+    border: #303841;
+}
+
+#pics {
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  #output {
+    border-radius: 50%;
+    height: 195px;
+    width: 195px;
+    border: 1px solid blue;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    -ms-border-radius: 50%;
+    -o-border-radius: 50%;
+  }
+  

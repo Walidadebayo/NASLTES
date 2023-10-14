@@ -1,0 +1,68 @@
+<%- include('./includes/admin-header') %>
+
+
+    <section class="section profile container mt-5">
+        <!-- <div class="col-xl-8"> -->
+
+          <div class="card">
+            <div class="card-body pt-3">
+              <!-- Bordered Tabs -->
+              <ul class="nav nav-tabs nav-tabs-bordered">
+
+                <li class="nav-item">
+                  <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#profile-overview">Profile</button>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link" href="/admin/edit-profile/">Edit Profile</a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link" href="/admin/changeEmail/">Change Email</a>
+                </li>
+
+                <li class="nav-item">
+                  <a class="nav-link" href="/admin/changePassword/">Change Password</a>
+                </li>
+
+              </ul>
+              <div class="tab-content pt-2">
+
+                <div class="tab-pane fade show active profile-overview" id="profile-overview">
+                  
+                  <h5 class="card-title dark2">Profile Details</h5>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label dark2">Full Name</div>
+                    <div class="col-lg-9 col-md-8"><%= admin.name %> </div>
+                  </div>
+                  
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label dark2">Gender</div>
+                    <div class="col-lg-9 col-md-8"><%= admin.gender %> </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label dark2">Phone</div>
+                    <div class="col-lg-9 col-md-8"><%= admin.phone %></div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-lg-3 col-md-4 label dark2">Email</div>
+                    <div class="col-lg-9 col-md-8"><%= admin.email %> </div>
+                  </div>
+
+                </div>
+
+               
+
+              </div><!-- End Bordered Tabs -->
+
+            </div>
+          </div>
+
+        <!-- </div> -->
+    </section>
+
+  </main>
+
+  <%- include('./includes/admin-footer')  %> 

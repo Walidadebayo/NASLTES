@@ -1,0 +1,59 @@
+<%- include('./includes/admin-header') %>
+<section class="section profile container mt-5">
+        <div class="col-xl-12">
+
+            <div class="card">
+              <div class="card-header">
+                  <a href="/admin/event/"><i class="bi bi-arrow-left fa-2x"></i></a>
+              </div>
+              <div class="card-body">
+                <form action="/admin/edit-event/<%= event.id %>" method="post" enctype="multipart/form-data">
+                  <div id="pics" class="form-group">
+                    <p class="text-center d-block mx-auto"><input type="file" class="form-control"  accept="image/*" name="passport" id="image" onchange="loadFile(event)" style="display: none;"></p>
+                    <p class="text-center d-block mx-auto">
+                              <label for="image" style="cursor: pointer;">
+                                <% if (event.image) { %>
+                                  <img id="output" width="100px" class="img-fluid"
+                                  src="/<%- event.image %>" alt="image">
+                                  <% } else{%>
+                                    <img id="output" width="100px" class="img-fluid"
+                                    src="/img/cat.png" alt="image">
+                                <% } %>
+                              </label>                        
+                              </p>
+                              <p style="font-size: 25px; text-align: center;">Event Picture</p>
+                    </div>
+                  <div class="row mb-3">
+                      <label for="name" class="col-md-4 col-lg-3 col-form-label dark2">Name</label>
+                      <div class="col-md-8 col-lg-9">
+                          <input type="text" class="form-control" id="name" value="<%= event.name %>"  name="name" placeholder="Enter Name(Name of the event)">
+                      </div>
+                    </div>
+                  <div class="row mb-3">
+                      <label for="performance" class="col-md-4 col-lg-3 col-form-label dark2">Performance</label>
+                      <div class="col-md-8 col-lg-9">
+                          <textarea  class="form-control" id="performance"  name="performance" placeholder="Enter Performance on that day"><%= event.performance %></textarea>
+                      </div>
+                    </div>
+                    <div class="row mb-3">
+                      <label  class="col-md-4 col-lg-3 col-form-label dark2">Date and Time</label>
+                      <div class="col-md-5 col-lg-6">
+                        <input type="datetime-local" value="<%=(event.date).toISOString().slice(0, 16).split('T').join(' ') %>"class="form-control" id="date"  name="date">
+                      </div>
+                    </div>
+                  <div class="row mb-3">
+                      <label for="venue" class="col-md-4 col-lg-3 col-form-label dark2">Venue</label>
+                      <div class="col-md-8 col-lg-9">
+                          <textarea type="text" class="form-control" id="venue"  name="venue" placeholder="Enter venue"><%= event.venue %></textarea>
+                      </div>
+                    </div>
+                    <div class="text-end mt-5">
+                        <button type="submit" class="btn  btn-primary">Submit</button>
+                    </div>
+                    </form>
+              </div>
+            </div>
+        </div>
+  </section>
+
+<%- include('./includes/admin-footer') %>
