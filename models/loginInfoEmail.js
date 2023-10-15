@@ -7,12 +7,12 @@ function loginInfoEmail(email, password, name, domain) {
   let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "adebayowalid@gmail.com", // Your email id
+      user: "apantakupaul2306@gmail.com", // Your email id
       pass: "onrqzpkmztufqrbq", // Your password
     },
   });
   let mailOptions = {
-    from: { name: "NasLTES", address: "adebayowalid@gmail.com" }, // sender address
+    from: { name: "NasLTES", address: "apantakupaul2306@gmail.com" }, // sender address
     to: email, // list of receivers
     subject: 'Login Information', // Subject line
     html: `<!doctype html>

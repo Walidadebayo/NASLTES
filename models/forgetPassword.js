@@ -8,13 +8,13 @@ function sendEmail(email, token, name, domain) {
   var mail = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "adebayowalid@gmail.com", // Your email id
+      user: "apantakupaul2306@gmail.com", // Your email id
       pass: "onrqzpkmztufqrbq", // Your password
     },
   });
 const url = `${domain}/reset-password/${token}`
   var mailOptions = {
-    from: {name:"CDF",address: "adebayowalid@gmail.com"},
+    from: {name:"CDF",address: "apantakupaul2306@gmail.com"},
     to: email,
     subject: "Reset Password Link ",
     html: `<!doctype html>

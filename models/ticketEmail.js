@@ -4,12 +4,12 @@ function ticketEmail(email, name, ticketId, domain) {
     let transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-          user: "adebayowalid@gmail.com", // Your email id
+          user: "apantakupaul2306@gmail.com", // Your email id
           pass: "onrqzpkmztufqrbq", // Your password
         },
       });
       var mailOptions = {
-        from: {name:'NASLTES', address:'adebayowalid@gmail.com'},
+        from: {name:'NASLTES', address:'apantakupaul2306@gmail.com'},
         to: email,
         subject: 'Ticket successfully purchased',
         html: `<!doctype html>
