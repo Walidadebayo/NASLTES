@@ -215,6 +215,12 @@ router.get('/transaction/verification', async (req, res) => {
               req.flash('success', "Your ticket has been purchased successfully and sent to your mail address")
               res.redirect('/#Ticket')
             } else {
+              let reference = req.query.transaction_id;
+              students.payment_status = req.query.status;
+              students.transaction_id = reference;
+              students.tx_ref = req.query.tx_ref;
+              ticketEmail(student.email, student.full_name, student.ticket_no, domain);
+              await students.update();
               req.flash('success', "Your ticket payment was not successful. Please try again")
               res.redirect('/#Ticket')
         }
@@ -222,6 +228,7 @@ router.get('/transaction/verification', async (req, res) => {
     .catch(console.log);
 })
 router.get('/failed/transaction', async (req, res) => {
+  
   if (req.session.student === undefined || req.session.student === null) {
     return res.redirect('/#Ticket')
   }
