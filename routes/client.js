@@ -93,7 +93,7 @@ router.get('/ticket/payment/', async (req, res) => {
   }
   var data = JSON.stringify({
     "tx_ref": await tx_ref(),
-    "amount": "1000",
+    "amount": "2000",
     "currency": "NGN",
     "subaccounts": [
       {
