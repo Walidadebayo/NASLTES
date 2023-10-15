@@ -1,10 +1,11 @@
 const express = require('express');
-const client = require('./routes/client');
-const adminRoute = require('./routes/adminRoute');
+const serverless = require('serverless-http');
+const client = require('../routes/client');
+const adminRoute = require('../routes/adminRoute');
 const fileUpload = require('express-fileupload');
 const session = require('express-session');
 const flash = require('req-flash');
-const authenticateAdmin = require('./middlewares/authenticateAdmin');
+const authenticateAdmin = require('../middlewares/authenticateAdmin');
 const { generate } = require('password-hash');
 const MemoryStore = require('memorystore')(session);
 const app = express();
@@ -66,8 +67,17 @@ app.use((err, req, res, next) => {
     res.render('error', { error: err, admin, user });
 })
 
+
+const router = express.Router();
+
+router.get('/hey', (req, res)=>{
+    res.send("Hey");
+})
+app.use("/.netlify/functions/app", router);
+module.exports.handler = serverless(app);
+
 // Start the server on port 3500.
-app.listen(port, () => {
-    console.log('App listening on http://localhost:'+port);
-});
+// app.listen(port, () => {
+//     console.log('App listening on http://localhost:'+port);
+// });
 
