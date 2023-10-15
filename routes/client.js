@@ -96,7 +96,7 @@ var data = JSON.stringify({
   "tx_ref": await tx_ref(),
   "amount": "1000",
   "currency": "NGN",
-  "redirect_url": domain +"/transaction/verification",
+  "redirect_url": "https://nasltes.onrender.com/transaction/verification",
     "meta": {
       "consumer_id": student.id,
       "ticket_number": student.ticket_no
@@ -109,7 +109,7 @@ var data = JSON.stringify({
   "customizations": {
     "title": "Regular Ticket Payment",
     "description": "Payment for regular ticket",
-    "logo": domain+"/img/logo.png"
+    "logo": "https://nasltes.onrender.com/img/logo.png"
   }
 // var data = JSON.stringify({
 //   "email": student.student_email,
