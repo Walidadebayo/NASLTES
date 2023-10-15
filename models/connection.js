@@ -7,9 +7,9 @@ const connection = mysql.createConnection({
     // database: 'cdf',
     // online
     host: 'db4free.net',
-    user: 'nasltesparty',
+    user: 'nastlesparty',
     password: 'naslteslautech',
-    database: 'nastltes',
+    database: 'nasltes',
 
 })
 connection.connect(err => console.log(err || 'Connected to the database'));
