@@ -47,27 +47,26 @@ router.post("/forget-password", async (req, res, next) => {
 });
 
 router.post('/admin/login', async(req, res) => {
-    let admin = await Admin.findByEmail(req.body.email)
-    if (!admin) {
-        req.flash('danger', 'Access denied')
-        return res.redirect('back')
-      }
-      if (admin.account_state === 'activated' && verify(req.body.password, admin.password)) {
-        req.session.admin = admin;
-        req.flash('success', `Welcome ${admin.name}`);
-        res.redirect(req?.session?.intent || '/admin/students');
-      } else if (admin.account_state === 'deactivated' && verify(req.body.password, admin.password)) {
-        req.session.email = req.body.email;
-        req.session.save(function (err) {
-          if (err) return next(err);
-        });
+  let admin = await Admin.findByEmail(req.body.email);
+  if (!admin) {
+    req.flash('danger', 'Access denied')
+    return res.redirect('back')
+  }
+  if (admin.account_state === 'activated' && verify(req.body.password, admin.password)) {
+    req.session.admin = admin;
+    req.flash('success', `Welcome ${admin.name}`);
+      res.redirect(req?.session?.intent || '/admin/students');
+    }  else if (admin.account_state === 'deactivated' || admin.account_state === null && verify(req.body.password, admin.password)) {
+      req.session.email = req.body.email;
+      req.session.save(function (err) {
+        if (err) return next(err);
+      });
         req.flash('danger', 'Create a new password');
         return res.redirect('/setPassword/')
       } else {
         req.flash('danger', 'Invalid email or password');
         res.redirect('back')
       }
-     
 })
 router.get("/setPassword/", setPassword);
 router.post("/setPassword/", set_passwordValidator, setUpdatePassword);
