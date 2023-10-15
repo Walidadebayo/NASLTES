@@ -54,7 +54,7 @@ router.post('/admin/login', async(req, res) => {
       if (admin.account_state === 'activated' && verify(req.body.password, admin.password)) {
         req.session.admin = admin;
         req.flash('success', `Welcome ${admin.name}`);
-        res.redirect(req?.session?.intent || '/admin/clients');
+        res.redirect(req?.session?.intent || '/admin/students');
       } else if (admin.account_state === 'deactivated' && verify(req.body.password, admin.password)) {
         req.session.email = req.body.email;
         req.session.save(function (err) {
