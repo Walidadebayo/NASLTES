@@ -31,4 +31,16 @@ let bookTicket  = async (req, res) => {
     res.redirect('/ticket/payment/')
 }
 
-module.exports = {index, bookTicket}
+// delete student
+let deleteStudent = async (req, res) => {
+    let admin_id = req?.session?.admin?.id;
+    if (!admin_id) {
+        return res.redirect('/admin/login')
+    }
+    let student = await Student.findById(req.params.student_id)
+    await student.delete()
+    req.flash('success', 'Student has been deleted successfully')
+    res.redirect('/admin/students')
+}
+
+module.exports = {index, bookTicket, deleteStudent}

@@ -6,6 +6,7 @@ const adminValidators = require('../validators/adminValidator');
 const editAdminValidators = require("../validators/editAdminValidator");
 const adminEmailValidator = require('../validators/adminEmailValidator');
 const passwordValidator = require('../validators/passwordValidator');
+const { deleteStudent } = require('../controllers/clientController');
 const router = Router()
 
 router.get('/admins/', async (req, res) => {
@@ -24,6 +25,7 @@ router.post("/changeEmail/", adminEmailValidator, updateEmail);
 router.get("/changePassword/", editPassword);
 router.post("/changePassword/", passwordValidator, updatePassword);
 
+router.get('/delete-student/:student_id', deleteStudent)
 
 router.get('/students', async (req, res) => {
     let students = await Student.fetch()

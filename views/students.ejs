@@ -12,7 +12,7 @@
           "columnDefs": [
             { "type": "date", "targets": [1] }//date column formatted like "03/23/2018 10:25:13 AM".
           ],
-          "pageLength": 5,
+          "pageLength": 50,
           stateSave: true,
   stateSaveCallback: function(settings,data) {
       localStorage.setItem( 'DataTables_' + settings.sInstance, JSON.stringify(data) )
@@ -78,6 +78,7 @@
                     <th>Payment Status</th>
                     <th>Reference No</th>
                     <th>Date</th>
+                    <th>Delete</th>
                   </thead>
                   <tbody>
                       <% for(const student of students ) {%>                          
@@ -99,6 +100,7 @@
                                   <% } %>
                             </td>
                           <td><%= (student.created_at).toDateString() %></td>
+                          <td><a href="/admin/delete-student/<%= student.id %>"><i class="bi bi-trash text-danger"></i></a></td>
                           </tr>
                         <% } %>
                   </tbody>
