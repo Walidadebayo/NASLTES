@@ -208,13 +208,13 @@ router.get('/transaction/verification', async (req, res) => {
               students.payment_status = response.status;
               students.transaction_id = reference;
               students.tx_ref = req.query.tx_ref;
-              ticketEmail(student.email, student.full_name, student.ticket_no, domain);
+              ticketEmail(student.student_email, student.full_name, student.ticket_no, domain);
               await students.update();
               req.flash('success', "Your ticket has been purchased successfully and sent to your mail address")
               res.redirect('/#Ticket')
             } else {
               students.payment_status = req.query.status;
-              cancelledPayment(student.email, student.full_name, domain);
+              cancelledPayment(student.student_email, student.full_name, domain);
               await students.update();
               req.flash('danger', "Your ticket payment was not successful. Please try again")
               res.redirect('/#Ticket')
