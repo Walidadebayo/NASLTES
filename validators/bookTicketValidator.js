@@ -4,12 +4,13 @@ const checkForValidationErrors = require('../middlewares/checkForValidationError
 
 let bookTicketValidators = [
     body('full_name').notEmpty().withMessage('Please enter your name'),
-    body('client_email').notEmpty().withMessage('Please enter email address'),
-    body('table_id').custom(async (value)=>{
-        if (value === 'select') {
-            throw new Error('Please pick table');
+    body('student_email').notEmpty().withMessage('Please enter email address').isEmail().withMessage('Please enter valid email address'),
+    body('phone').notEmpty().withMessage('Please enter phone number').isMobilePhone('en-NG').withMessage('Please enter valid phone number'),
+    body('type').custom((value)=>{
+        if(!['regular'].includes(value)){
+            throw new Error('Please select ticket type')
         }
-        return true;
+        return true
     }),
     checkForValidationErrors
 ];

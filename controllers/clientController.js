@@ -1,32 +1,16 @@
-const Gallery = require("../models/galleries")
-const Ticket = require("../models/tickets")
-const Event = require("../models/events")
-const Client = require("../models/clients")
-const sendEmail = require("../models/contactEmail")
-const Contact = require("../models/contact")
-const Tables = require("../models/tables")
+const Student = require("../models/students")
 const { query } = require("../models/connection")
 
 let index= async(req, res) =>{
     res.render('index')
 }
-let contact  = async (req, res) => {
-    let contact = new Contact(req.body)
-    let email = req.body.email
-    let name = req.body.name
-    let subject = req.body.subject
-    let message = req.body.message
-    contact.save()
-    sendEmail(email, name, subject, message)
-    req.flash('success', 'Message sent successfully')
-    res.redirect('/')
-}
+
 let uuid = async function() {
     let ticket_no =  `xxxx-xxxx-xyxx-4xxy`.replace(/[xy]/g, function (c) {
         var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
       return   v.toString(16);
     });
-    while (await Client.ticketNoExists(ticket_no)) {
+    while (await Student.ticketNoExists(ticket_no)) {
         ticket_no =  `xxxx-xxxx-xyxx-4xxy`.replace(/[xy]/g, function (c) {
             var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
        return      v.toString(16);
@@ -37,33 +21,14 @@ let uuid = async function() {
 
 let bookTicket  = async (req, res) => {
     let { modal, ...otherFields } = req.body
-    // console.log(req.body.table_id);return
-    if (req.body.table_id !== undefined) {
-        var table = await Tables.findByName(req.body.table_id);
-        if (!table) {
-            req.flash('danger', 'Something went wrong. Please try again')
-            return res.redirect('/#Ticket')
-        }
-        
-    }
-    // console.log(req.body);return
-    let ticket = await Ticket.findById(req.body.ticket_id);
-    let client = new Client(otherFields)
-    client.ticket_no = await uuid()
-    if (req.body.table_id !== undefined) {
-        client.table_id = table.id;
-        req.session.price = table.price;
-    }else{
-        req.session.price = ticket.price;
-    }
-    req.session.client = client;
+    let student = new Student(otherFields)
+    student.ticket_no = await uuid()
+    req.session.student = student;
     req.session.save(function (err) {
         if (err) return next(err);
     });
-    // console.log(req.session);return
-    client.save()
-    // res.redirect('/#Ticket')
+    student.save()
     res.redirect('/ticket/payment/')
 }
 
-module.exports = {index, contact, bookTicket}
+module.exports = {index, bookTicket}

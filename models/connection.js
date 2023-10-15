@@ -5,6 +5,11 @@ const connection = mysql.createConnection({
     user: 'root',
     password: '',
     database: 'cdf',
+    // online
+    // host: 'db4free.net',
+    // user: 'nasltesparty',
+    // password: 'naslteslautech',
+    // database: 'nastltes',
 
 })
 connection.connect(err => console.log(err || 'Connected to the database'));

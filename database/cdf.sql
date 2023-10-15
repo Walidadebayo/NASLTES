@@ -53,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `admins` (
 CREATE TABLE IF NOT EXISTS `clients` (
   `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT,
   `full_name` varchar(200) NOT NULL,
-  `client_email` varchar(200) NOT NULL,
+  `student_email` varchar(200) NOT NULL,
   `phone` varchar(200) NOT NULL,
   `ticket_id` int(11) UNSIGNED DEFAULT NULL,
   `ticket_no` varchar(50) NOT NULL,

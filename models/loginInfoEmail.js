@@ -1,18 +1,18 @@
 const nodemailer = require("nodemailer");
 //send email
-function loginInfoEmail(email, password, name) {
+function loginInfoEmail(email, password, name, domain) {
   var email = email;
   var password = password;
-  var url = `http://localhost:4000/admin/login/`
+  var url = `${domain}/admin/login/`
   let transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "crackdfloor@gmail.com", // Your email id
-      pass: "hrkrzdyqmmynucyw", // Your password
+      user: "adebayowalid@gmail.com", // Your email id
+      pass: "onrqzpkmztufqrbq", // Your password
     },
   });
   let mailOptions = {
-    from: { name: "CDF", address: "crackdfloor@gmail.com" }, // sender address
+    from: { name: "NasLTES", address: "adebayowalid@gmail.com" }, // sender address
     to: email, // list of receivers
     subject: 'Login Information', // Subject line
     html: `<!doctype html>
@@ -20,8 +20,8 @@ function loginInfoEmail(email, password, name) {
     
     <head>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-        <title>Reset Password Email Template</title>
-        <meta name="description" content="Reset Password Email Template.">
+        <title>Reset Password Email</title>
+        <meta name="description" content="Reset Password Email.">
         <style type="text/css">
             a:hover {text-decoration: underline !important;}
         </style>
@@ -40,8 +40,8 @@ function loginInfoEmail(email, password, name) {
                         </tr>
                         <tr>
                             <td style="text-align:center;">
-                              <a href="http://localhost:5000" title="logo" target="_blank">
-                                <img width="100" style="border-radius: 50%;" src="https://i.im.ge/2022/10/03/1KQxfz.IMG-20220915-WA0033.jpg" title="logo" alt="logo">
+                              <a href="${domain}" title="logo" target="_blank">
+                                <img width="100" style="border-radius: 50%;" src="${domain}/img/logo.png" title="logo" alt="logo">
                               </a>
                             </td>
                         </tr>

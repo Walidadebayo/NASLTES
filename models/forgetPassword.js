@@ -1,6 +1,6 @@
 const nodemailer = require("nodemailer");
 //send email
-function sendEmail(email, token, name) {
+function sendEmail(email, token, name, domain) {
   var email = email;
   var token = token;
   var name = name
@@ -8,13 +8,13 @@ function sendEmail(email, token, name) {
   var mail = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: "crackdfloor@gmail.com", // Your email id
-      pass: "hrkrzdyqmmynucyw", // Your password
+      user: "adebayowalid@gmail.com", // Your email id
+      pass: "onrqzpkmztufqrbq", // Your password
     },
   });
-const url = `http://localhost:4000/reset-password/${token}`
+const url = `${domain}/reset-password/${token}`
   var mailOptions = {
-    from: {name:"CDF",address: "crackdfloor@gmail.com"},
+    from: {name:"CDF",address: "adebayowalid@gmail.com"},
     to: email,
     subject: "Reset Password Link ",
     html: `<!doctype html>
@@ -23,7 +23,7 @@ const url = `http://localhost:4000/reset-password/${token}`
     <head>
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
         <title>Reset Password Email Template</title>
-        <meta name="description" content="Reset Password Email Template.">
+        <meta name="description" content="Reset Password Email.">
         <style type="text/css">
             a:hover {text-decoration: underline !important;}
         </style>
@@ -42,8 +42,8 @@ const url = `http://localhost:4000/reset-password/${token}`
                         </tr>
                         <tr>
                         <td style="text-align:center;">
-                          <a href="http://localhost:4000" title="logo" target="_blank">
-                            <img width="100" style="border-radius: 50%;" src="https://i.im.ge/2022/10/03/1KQxfz.IMG-20220915-WA0033.jpg" title="logo" alt="logo">
+                          <a href="${domain}" title="logo" target="_blank">
+                            <img width="100" style="border-radius: 50%;" src="${domain}/img/logo.png" title="logo" alt="logo">
                           </a>
                         </td>
                     </tr>

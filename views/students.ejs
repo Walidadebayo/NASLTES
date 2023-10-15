@@ -32,6 +32,19 @@
       .reference:hover .fa-copy{
         display: block;
       }
+      @media print {
+      body * {
+        visibility: hidden;
+      }
+      #table, #table * {
+        visibility: visible;
+      }
+      #table {
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+    }
 </style>
 </head>
 
@@ -44,8 +57,11 @@
             
               <div class="card-body">
                 
-                  <div class=" col-md-10"><h5 class="card-title">Clients</h5></div>
-                  
+                <div class="row">
+                  <div class=" col-md-10"><h5 class="card-title">Students</h5></div>
+                    <div class=" col-md-2 mt-3"><button class="btn btn-sm btn-primary mb-3" onclick="window.print()" >Print</button></div>                  
+                </div>                    
+                                    
                   
                 <table class="table table-borderless" id="tickets">
                   <thead>
@@ -53,44 +69,32 @@
                     <th>Name</th>
                     <th>Email</th>
                     <th>Phone</th>
-                    <th>Ticket</th>
-                    <th>Ticket No</th>
-                    <th>Table</th>
-                    <th>Amount paid</th>
-                    <th>Payment</th>
+                    <th>Ticket Type</th>
+                    <th>Ticket NUmber</th>
+                    <th>Payment Status</th>
                     <th>Reference No</th>
                     <th>Date</th>
                   </thead>
                   <tbody>
-                      <% for(const client of clients ) {%>                          
-                            <td><%= client.id %></td>
-                            <td><%= client.full_name %></td>
-                            <td><%= client.client_email %></td>
-                            <td><%= client.phone %></td>
-                            <td><%= client.ticket.type %></td>
-                            <td><%= client.ticket_no %></td>
-                            <% if (client.table_id) { %>
-                              <td><%= client.table %></td>
-                            <% } else{%>
-                              <td>No Table for <%= client.ticket.type %></td>
-                            <% } %>
-                            <% if (client.table_id) { %>
-                              <td><%= client.table.price.toLocaleString('en-Ng', {style:'currency', currency:'NGN'})%></td>
-                            <% } else{%>
-                              <td><%= (client.ticket.price).toLocaleString('en-Ng', {style:'currency', currency:'NGN'}) %></td>
-                            <% } %>
+                      <% for(const student of students ) {%>                          
+                            <td><%= student.id %>const [propertyName] = arrayToDestruct;</td>
+                            <td><%= student.full_name %></td>
+                            <td><%= student.student_email %></td>
+                            <td><%= student.phone %></td>
+                            <td><%= student.type %></td>
+                            <td><%= student.ticket_no %></td>
                             <td>
-                              <%= client.payment %>
+                              <%= student.payment_status %>
                             </td>
                             <td class="reference">
-                              <span id="reference<%= client.id %>"><%= client.reference_no %></span>
-                                <% if (client.reference_no !== 'transaction failed' && client.reference === null) { %>
+                              <span id="reference<%= student.id %>"><%= student.reference_no %></span>
+                                <% if (student.reference_no !== 'failed' && student.reference_no != null) { %>
                                   <i class="fa fa-copy"
-                                    onclick="copyToClipboard('#reference<%= client.id %>'); flash('success', 'Copied Reference')"
+                                    onclick="copyToClipboard('#reference<%= student.id %>'); flash('success', 'Copied Reference')"
                                     style="font-size: 15px; cursor: pointer;"></i>
                                   <% } %>
                             </td>
-                          <td><%= (client.created_at).toDateString() %></td>
+                          <td><%= (student.created_at).toDateString() %></td>
                           </tr>
                         <% } %>
                   </tbody>
@@ -119,18 +123,6 @@
   };
 
 </script>
-<script>
-  function addTable() {
-    $('#tables').removeClass('d-none')
-    $('#removeTable').removeClass('d-none')
-    $('#tableLabel').removeClass('d-none')
-  }
-  function removeTable() {
-      $('#tableLabel').addClass('d-none')
-        $("#tables").addClass('d-none')
-    }
-  $('#modalError').val($('#addTicketModal').attr('id'))
-  $('#modalError2').val($('#addTableModal').attr('id'))
-</script>
+
 <%- include('./includes/admin-footer') %>
       

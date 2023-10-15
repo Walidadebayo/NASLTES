@@ -1,15 +1,15 @@
 const nodemailer = require('nodemailer');
 
-function ticketEmail(email, name, ticketId) {
+function ticketEmail(email, name, ticketId, domain) {
     let transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-          user: "crackdfloor@gmail.com", // Your email id
-          pass: "hrkrzdyqmmynucyw", // Your password
+          user: "adebayowalid@gmail.com", // Your email id
+          pass: "onrqzpkmztufqrbq", // Your password
         },
       });
       var mailOptions = {
-        from: {name:'CDF Client', address:'crackdfloor@gmail.com'},
+        from: {name:'NASLTES', address:'adebayowalid@gmail.com'},
         to: email,
         subject: 'Ticket successfully purchased',
         html: `<!doctype html>
@@ -47,8 +47,8 @@ function ticketEmail(email, name, ticketId) {
                                         </tr>
                                         <tr>
                                         <td style="text-align:center;">
-                                          <a href="http://localhost:4000" title="logo" target="_blank">
-                                            <img width="100" style="border-radius: 50%;" src="https://i.im.ge/2022/10/03/1KQxfz.IMG-20220915-WA0033.jpg" title="logo" alt="logo">
+                                          <a href="${domain}" title="logo" target="_blank">
+                                            <img width="100" style="border-radius: 50%;" src="${domain}/img/logo.png" title="logo" alt="logo">
                                           </a>
                                         </td>
                                     </tr>
@@ -56,8 +56,8 @@ function ticketEmail(email, name, ticketId) {
                                             <td style="padding:0 35px;">
                                             <h1>From ${name},</h1>
                                                 <h3>You've successfully purchased ticket from us</h3>
-                                                <h6>Please bring your ticket No with you</h6>
-                                                <p>Ticket No : ${ticketId}</p>
+                                                <h6>Please bring your ticket number with you</h6>
+                                                <p>Ticket number : ${ticketId}</p>
                                             </td>
                                         </tr>
                                         <tr>

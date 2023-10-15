@@ -7,18 +7,16 @@ const set_passwordValidator = require('../validators/set_passwordValidator');
 const axios = require('axios');
 var FormData = require('form-data');
 const bookTicketValidators = require('../validators/bookTicketValidator');
-const Ticket = require('../models/tickets');
-const Tables = require('../models/tables');
-const { findByTicketNo } = require('../models/clients');
-const Client = require('../models/clients');
+const Student = require('../models/students');
 var randtoken = require("rand-token");
-const contactValidators = require('../validators/contactValidator');
+require('dotenv').config()
 const sendEmail = require('../models/forgetPassword');
+const Flutterwave = require('flutterwave-node-v3');
+const flw = new Flutterwave(process.env.FLW_PUBLIC_KEY, process.env.FLW_SECRET_KEY);
 const ticketEmail = require('../models/ticketEmail');
 const router = Router()
 
 router.get('/', index)
-router.post('/send/message', contactValidators,contact)
 router.get('/admin/login', async(req, res) => {
     res.render('login')
 })
@@ -33,9 +31,10 @@ router.post("/forget-password", async (req, res, next) => {
     req.flash("danger", "No registered account with this email");
     return res.redirect("back");
   }
+  var domain =req.get('host');
   var name = admin.first_name
   const token = randtoken.generate(30);
-  var sent = sendEmail(email, token, name);
+  var sent = sendEmail(email, token, name, domain);
   if (sent != '0') {
     admin.token = token;
     await admin.update();
@@ -73,48 +72,81 @@ router.get("/setPassword/", setPassword);
 router.post("/setPassword/", set_passwordValidator, setUpdatePassword);
 router.post('/book/ticket/', bookTicketValidators,bookTicket)
 router.get('/ticket/payment/', async (req, res) => {
-let client = req.session.client
-let price = req.session.price
-if (!client || !price) {
+let student = req.session.student
+if (!student) {
   req.flash('danger', 'Something went wrong. Please try again')
   return res.redirect('/#Ticket')
 }
-let ticket = await Ticket.findById(client.ticket_id);
-let ticket_name = ticket.type
-if (client.table_id !== undefined) {
-  var table = await Tables.findById(client.table_id);
-  var table_name = table.name
-  if (!table) {
-    req.flash('danger', 'Something went wrong. Please try again')
-    return res.redirect('/#Ticket')
-  }
-  
-}else{
- var table_name = undefined
-}
 
-var data = JSON.stringify({
-  "email": client.client_email,
-  "amount": price * 100,
-  "callback_url": "http://localhost:4000/transaction/verification",
-  "metadata": {
-    "cancel_action": "http://localhost:4000/failed/transaction/",
-    "custom_fields": [
-      {
-        "display_name": client.full_name,
-        "variable_name": "mobile_number",
-        "variable_name": "client_email",
-        "value": client.client_email
-      }
-    ]
+var domain =req.get('host');
+let tx_ref = async function() {
+  let tx_ref =  `xxxx-xxxx-xyxx-4xxy`.replace(/[xy]/g, function (c) {
+      var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+    return   v.toString(16);
+  });
+  while (await Student.txRefExists(tx_ref)) {
+      tx_ref =  `xxxx-xxxx-xyxx-4xxy`.replace(/[xy]/g, function (c) {
+          var r = Math.random() * 16 | 0, v = c == 'x' ? r : (r & 0x3 | 0x8);
+     return      v.toString(16);
+      });
   }
+  return tx_ref;
+}
+var data = JSON.stringify({
+  "tx_ref": await tx_ref(),
+  "amount": "1000",
+  "currency": "NGN",
+  "redirect_url": domain +"/transaction/verification",
+    "meta": {
+      "consumer_id": student.id,
+      "ticket_number": student.ticket_no
+  },
+    "customer": {
+      "email": student.student_email,
+      "phonenumber":student.phone,
+      "name": student.full_name
+  },
+  "customizations": {
+    "title": "Regular Ticket Payment",
+    "description": "Payment for regular ticket",
+    "logo": domain+"/img/logo.png"
+  }
+// var data = JSON.stringify({
+//   "email": student.student_email,
+//   "amount": 1000 * 100,
+//   "callback_url": domain +"/transaction/verification",
+//   "metadata": {
+//     "cancel_action": domain + "/failed/transaction/",
+//     "custom_fields": [
+//       {
+//         "display_name": "Student Name",
+//         "variable_name": "student_name",
+//         "value": student.full_name
+//       },
+//       {
+//         "display_name": "Student Email",
+//         "variable_name": "student_email",
+//         "value": student.student_email
+//       },
+//       {
+//         "display_name": "Student Phone",
+//         "variable_name": "student_phone",
+//         "value": student.phone
+//       },
+//       {
+//         "display_name": "Student Ticket",
+//         "variable_name": "student_ticket",
+//         "value": student.ticket_no
+//       }
+//     ]
+//   }
 });
 
 var config = {
   method: 'post',
-  url: 'https://api.paystack.co/transaction/initialize',
+  url: 'https://api.flutterwave.com/v3/payments',
   headers: {
-    'Authorization': 'Bearer sk_live_392a4907f8b07d7e4b9a1105a0a77438a1af0779',
+    'Authorization':  `Bearer ${process.env.FLW_SECRET_KEY}`,
     'Content-Type': 'application/json'
   },
   data: data
@@ -122,13 +154,10 @@ var config = {
 axios(config)
 .then(function (response) {
   let data = response.data
-  let link = data.data.authorization_url
+  let link = data.data.link
   res.render('payment-gateway', {
     title: 'Payment',
-    client: client,
-    price: price,
-    table_name: table_name,
-    ticket_name: ticket_name,
+    student: student,
     checkout_payment: link
   })
 })
@@ -138,49 +167,68 @@ axios(config)
 })
 
 router.get('/transaction/verification', async (req, res) => {
-  let client = req.session.client
-  let price = req.session.price
-  if (!client || !price) {
+  let student = req.session.student
+  if (!student) {
     return res.redirect('/#Ticket')
   }
-  var clients = await  Client.findByTicketNo(client.ticket_no)
-  var data = new FormData();
-  var config = {
-    method: 'get',
-    url: `https://api.paystack.co/transaction/verify/${req.query.reference}`,
-    headers: {
-      'Authorization': 'Bearer sk_live_392a4907f8b07d7e4b9a1105a0a77438a1af0779',
-      ...data.getHeaders()
-    },
-    data: data
-  };
+  var domain =req.get('host');
 
-  axios(config)
-    .then(async function (response) {
-      if (response.data.data.status === 'success') {
-        let reference = req.query.reference;
-        clients.payment = response.data.data.status;
-        var name = client.first_name+" "+client.last_name
-        clients.reference_no = reference;
-        ticketEmail(client.email, name, client.ticket_no);
-        await clients.update();
-        req.flash('success', "Your ticket has been purchased successfully and sent to your mail address")
-        res.redirect('/#Ticket')
-      }
+  var students = await  Student.findByTicketNo(student.ticket_no)
+  // var data = new FormData();
+  // var config = {
+  //   method: 'get',
+  //   url: `https://api.paystack.co/transaction/verify/${req.query.reference}`,
+  //   headers: {
+  //     'Authorization': `Bearer ${process.env.FLW_SECRET_KEY}`,
+  //     ...data.getHeaders()
+  //   },
+  //   data: data
+  // };
+
+  // axios(config)
+  //   .then(async function (response) {
+  //     if (response.data.data.status === 'success') {
+  //       let reference = req.query.reference;
+  //       students.payment_status = response.data.data.status;
+  //       students.reference_no = reference;
+  //       ticketEmail(student.email, student.full_name, student.ticket_no, domain);
+  //       await students.update();
+  //       req.flash('success', "Your ticket has been purchased successfully and sent to your mail address")
+  //       res.redirect('/#Ticket')
+  //     }
+  //   })
+  //   .catch(function (error) {
+  //     console.log(error);
+  //   });
+    flw.Transaction.verify({ id: transactionId })
+    .then(async(response) => {
+        if (
+            response.data.status === "successful"
+            && response.data.amount === expectedAmount
+            && response.data.currency === expectedCurrency) {
+              let reference = req.query.transaction_id;
+              students.payment_status = response.data.status;
+              students.transaction_id = reference;
+              students.tx_ref = req.query.tx_ref;
+              ticketEmail(student.email, student.full_name, student.ticket_no, domain);
+              await students.update();
+              req.flash('success', "Your ticket has been purchased successfully and sent to your mail address")
+              res.redirect('/#Ticket')
+            } else {
+              req.flash('success', "Your ticket payment was not successful. Please try again")
+              res.redirect('/#Ticket')
+        }
     })
-    .catch(function (error) {
-      console.log(error);
-    });
-  console.log(order);
+    .catch(console.log);
 })
 router.get('/failed/transaction', async (req, res) => {
-  if (req.session.client === undefined || req.session.client === null) {
+  if (req.session.student === undefined || req.session.student === null) {
     return res.redirect('/#Ticket')
   }
-  var client = await  Client.findByTicketNo(req.session.client.ticket_no)
-  client.payment = 'unsuccessful';
-  client.reference_no = 'transaction failed';
-  await client.update()
+  var student = await  Student.findByTicketNo(req.session.student.ticket_no)
+  student.payment = 'unsuccessful';
+  student.reference_no = 'failed';
+  await student.update()
   req.flash('danger', 'Payment failed')
   res.redirect('/#Ticket')
 })
