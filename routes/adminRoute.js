@@ -27,11 +27,6 @@ router.post("/changePassword/", passwordValidator, updatePassword);
 
 router.get('/students', async (req, res) => {
     let students = await Student.fetch()
-    for (const student of students) {
-        student.table = await Table.findById(student.table_id)
-        student.ticket = await Ticket.findById(student.ticket_id)
-        console.log(student.table, student.ticket);
-    }
     res.render('students', { students })
 })
 
