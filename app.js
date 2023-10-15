@@ -1,7 +1,6 @@
 const express = require('express');
 const client = require('./routes/client');
 const adminRoute = require('./routes/adminRoute');
-const fileUpload = require('express-fileupload');
 const session = require('express-session');
 const flash = require('req-flash');
 const authenticateAdmin = require('./middlewares/authenticateAdmin');
@@ -38,13 +37,7 @@ app.use(express.static('uploads'));
 app.set('view engine', 'ejs');
 app.set('views', 'views');
 app.use(express.urlencoded({ extended: true }))
-app.use(fileUpload(
-    {
 
-        useTempFiles: true,
-        tempFileDir: './tmp/'
-    }
-));
 
 app.use(client);
 app.use('/admin', authenticateAdmin, adminRoute);
