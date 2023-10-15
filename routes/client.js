@@ -14,6 +14,7 @@ const sendEmail = require('../models/forgetPassword');
 const Flutterwave = require('flutterwave-node-v3');
 const flw = new Flutterwave(process.env.FLW_PUBLIC_KEY, process.env.FLW_SECRET_KEY);
 const ticketEmail = require('../models/ticketEmail');
+const cancelledPayment = require('../models/cancelledPayment');
 const router = Router()
 
 router.get('/', index)
@@ -96,7 +97,7 @@ var data = JSON.stringify({
   "tx_ref": await tx_ref(),
   "amount": "1000",
   "currency": "NGN",
-  "redirect_url": "https://nasltes.onrender.com/transaction/verification",
+  "redirect_url": "http://localhost:3500/transaction/verification",
     "meta": {
       "consumer_id": student.id,
       "ticket_number": student.ticket_no
@@ -109,7 +110,7 @@ var data = JSON.stringify({
   "customizations": {
     "title": "Regular Ticket Payment",
     "description": "Payment for regular ticket",
-    "logo": "https://nasltes.onrender.com/img/logo.png"
+    "logo": "http://localhost:3500/img/logo.png"
   }
 // var data = JSON.stringify({
 //   "email": student.student_email,
@@ -200,14 +201,11 @@ router.get('/transaction/verification', async (req, res) => {
   //   .catch(function (error) {
   //     console.log(error);
   //   });
-    flw.Transaction.verify({ id: transactionId })
+    flw.Transaction.verify({ id: req.query.transaction_id ? req.query.transaction_id : req.query.tx_ref })
     .then(async(response) => {
-        if (
-            response.data.status === "successful"
-            && response.data.amount === expectedAmount
-            && response.data.currency === expectedCurrency) {
+        if (response.status === "successful") {
               let reference = req.query.transaction_id;
-              students.payment_status = response.data.status;
+              students.payment_status = response.status;
               students.transaction_id = reference;
               students.tx_ref = req.query.tx_ref;
               ticketEmail(student.email, student.full_name, student.ticket_no, domain);
@@ -215,13 +213,10 @@ router.get('/transaction/verification', async (req, res) => {
               req.flash('success', "Your ticket has been purchased successfully and sent to your mail address")
               res.redirect('/#Ticket')
             } else {
-              let reference = req.query.transaction_id;
               students.payment_status = req.query.status;
-              students.transaction_id = reference;
-              students.tx_ref = req.query.tx_ref;
-              ticketEmail(student.email, student.full_name, student.ticket_no, domain);
+              cancelledPayment(student.email, student.full_name, domain);
               await students.update();
-              req.flash('success', "Your ticket payment was not successful. Please try again")
+              req.flash('danger', "Your ticket payment was not successful. Please try again")
               res.redirect('/#Ticket')
         }
     })
