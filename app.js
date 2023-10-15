@@ -66,6 +66,7 @@ app.use((err, req, res, next) => {
     res.render('error', { error: err, admin, user });
 })
 
+// Start the server on port 3500.
 app.listen(port, () => {
     console.log('App listening on http://localhost:'+port);
 });
