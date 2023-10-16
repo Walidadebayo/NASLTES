@@ -101,7 +101,8 @@
                     <th>Ticket Type</th>
                     <th>Ticket NUmber</th>
                     <th>Payment Status</th>
-                    <th>Reference No</th>
+                    <th class="del">Transaction ID</th>
+                    <th class="del">TX Reference</th>
                     <th>Date</th>
                     <th class="del">Delete</th>
                   </thead>
@@ -116,11 +117,19 @@
                             <td>
                               <%= student.payment_status %>
                             </td>
-                            <td class="reference">
-                              <span id="reference<%= student.id %>"><%= student.reference_no %></span>
-                                <% if (student.reference_no !== 'failed' && student.reference_no != null) { %>
+                            <td class="reference del">
+                              <span id="trans<%= student.id %>"><%= student.transaction_id %></span>
+                                <% if (student.transaction_id !== 'failed' || student.transaction_id != null) { %>
                                   <i class="fa fa-copy"
-                                    onclick="copyToClipboard('#reference<%= student.id %>'); flash('success', 'Copied Reference')"
+                                    onclick="copyToClipboard('#trans<%= student.id %>'); flash('success', 'Copied transaction ID')"
+                                    style="font-size: 15px; cursor: pointer;"></i>
+                                  <% } %>
+                            </td>
+                            <td class="reference del">
+                              <span id="reference<%= student.id %>"><%= student.tx_ref %></span>
+                                <% if (student.tx_ref != null) { %>
+                                  <i class="fa fa-copy"
+                                    onclick="copyToClipboard('#reference<%= student.id %>'); flash('success', 'Copied TX reference')"
                                     style="font-size: 15px; cursor: pointer;"></i>
                                   <% } %>
                             </td>
