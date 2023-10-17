@@ -119,7 +119,7 @@
                             </td>
                             <td class="reference del">
                               <span id="trans<%= student.id %>"><%= student.transaction_id %></span>
-                                <% if (student.transaction_id !== 'failed' || student.transaction_id != null) { %>
+                                <% if (student.transaction_id != null) { %>
                                   <i class="fa fa-copy"
                                     onclick="copyToClipboard('#trans<%= student.id %>'); flash('success', 'Copied transaction ID')"
                                     style="font-size: 15px; cursor: pointer;"></i>
@@ -127,11 +127,11 @@
                             </td>
                             <td class="reference del">
                               <span id="reference<%= student.id %>"><%= student.tx_ref %></span>
-                                <% if (student.tx_ref != null) { %>
+                                <% if (student.tx_ref !== null) { %>
                                   <i class="fa fa-copy"
                                     onclick="copyToClipboard('#reference<%= student.id %>'); flash('success', 'Copied TX reference')"
                                     style="font-size: 15px; cursor: pointer;"></i>
-                                  <% } %>
+                                <% } %>
                             </td>
                           <td><%= (student.created_at).toDateString() %></td>
                           <td class="del"><a href="/admin/delete-student/<%= student.id %>"><i class="bi bi-trash text-danger"></i></a></td>

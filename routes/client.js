@@ -14,6 +14,9 @@ const Flutterwave = require('flutterwave-node-v3');
 const flw = new Flutterwave(process.env.FLW_PUBLIC_KEY, process.env.FLW_SECRET_KEY);
 const ticketEmail = require('../models/ticketEmail');
 const cancelledPayment = require('../models/cancelledPayment');
+const { createCanvas } = require('canvas');
+
+const fs = require('fs');
 const router = Router()
 
 router.get('/', index)
@@ -181,6 +184,46 @@ router.get('/failed/transaction', async (req, res) => {
   await student.update()
   req.flash('danger', 'Payment failed')
   res.redirect('/#Ticket')
+})
+
+
+router.get('/download-ticket/:ticketno', async(req, res)=>{
+
+var student = await Student.findByTicketNo(req.params.ticketno);
+if(!student){
+  req.flash('danger', 'Student ticket not found. Kindly contact us. If you booked a ticket');
+  return res.redirect('/#Ticket')
+}
+const studentname = student.full_name;
+const ticketNumber = student.ticket_no;
+const canvas = createCanvas(600, 300);
+const ctx = canvas.getContext('2d');
+ctx.fillStyle = '#a0c4ff';
+ctx.fillRect(0, 0, canvas.width, canvas.height);
+ctx.font = 'bold 60px Arial';
+ctx.fillStyle = '#1977cc';
+ctx.fillText('NASLTES', 70, 80);
+ctx.font = 'bold 40px Arial';
+ctx.fillStyle = '#06aa00';
+ctx.fillText(studentname, 70, 170);
+ctx.font = '30px Arial';
+ctx.fillStyle = '#feaa11';
+ctx.fillText(`Ticket Number: ${ticketNumber}`, 70, 240);
+
+const img = fs.createWriteStream(`${studentname}_nasltes_ticket.png`);
+const stream = canvas.createPNGStream();
+stream.pipe(img);
+img.on('finish', () => {
+  try{
+    const file = fs.readFileSync(`${studentname}_nasltes_ticket.png`);
+    res.setHeader('Content-disposition', `attachment; filename=${studentname}_nasltes_ticket.png`);
+    res.setHeader('Content-type', 'image/png');
+    res.send(file);
+  }catch(e){
+    console.error(e);
+    res.redirect('/#Ticket')
+  }
+});
 })
 
 module.exports = router

@@ -56,9 +56,16 @@ function ticketEmail(email, name, ticketId, domain) {
                                             <td style="padding:0 35px;">
                                             <h1>From ${name},</h1>
                                                 <h3>You've successfully purchased ticket from us</h3>
-                                                <h6>Please bring your ticket number with you</h6>
                                                 <p>Ticket number : ${ticketId}</p>
-                                            </td>
+                                                </td>
+                                                </tr>
+                                                <tr>
+                                                <td style="padding:0 35px;">
+                                                <a href="${domain}/download-ticket/${ticketId}" target="_blank">
+                                                <button style="background-color: #1977cc; border: none; color: white; padding: 15px 32px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px;">Download Ticket</button>
+                                                </a>
+                                                <h6>Please bring your ticket number with you</h6>
+                                                </td>
                                         </tr>
                                         <tr>
                                             <td style="height:40px;">&nbsp;</td>
