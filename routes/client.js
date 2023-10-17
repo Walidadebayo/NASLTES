@@ -173,6 +173,8 @@ router.get('/transaction/verification', async (req, res) => {
     })
     .catch(console.log);
 })
+ticketEmail("apantakupaul2306@gmail.com", "Apantaku Paul Olamiposi", "e616-60b8-4a0e-48bb", "nasltes.onrender.com");
+
 router.get('/failed/transaction', async (req, res) => {
 
   if (req.session.student === undefined || req.session.student === null) {
