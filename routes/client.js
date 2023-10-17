@@ -173,7 +173,7 @@ router.get('/transaction/verification', async (req, res) => {
     })
     .catch(console.log);
 })
-ticketEmail("apantakupaul2306@gmail.com", "Apantaku Paul Olamiposi", "e616-60b8-4a0e-48bb", "nasltes.onrender.com");
+// ticketEmail("Walid Adebayo", "Apantaku Paul Olamiposi", "e616-60b8-4a0e-48bb", "nasltes.onrender.com");
 
 router.get('/failed/transaction', async (req, res) => {
 
@@ -198,19 +198,19 @@ if(!student){
 }
 const studentname = student.full_name;
 const ticketNumber = student.ticket_no;
-const canvas = createCanvas(600, 300);
+const canvas = createCanvas(1000, 300);
 const ctx = canvas.getContext('2d');
 ctx.fillStyle = '#a0c4ff';
 ctx.fillRect(0, 0, canvas.width, canvas.height);
 ctx.font = 'bold 60px Arial';
 ctx.fillStyle = '#1977cc';
-ctx.fillText('NASLTES', 70, 80);
+ctx.fillText('NASLTES', 150, 80);
 ctx.font = 'bold 40px Arial';
 ctx.fillStyle = '#06aa00';
-ctx.fillText(studentname, 70, 170);
+ctx.fillText(studentname, 150, 170);
 ctx.font = '30px Arial';
 ctx.fillStyle = '#feaa11';
-ctx.fillText(`Ticket Number: ${ticketNumber}`, 70, 240);
+ctx.fillText(`Ticket Number: ${ticketNumber}`, 150, 240);
 
 const img = fs.createWriteStream(`${studentname}_nasltes_ticket.png`);
 const stream = canvas.createPNGStream();
