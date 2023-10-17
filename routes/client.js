@@ -164,16 +164,15 @@ router.get('/transaction/verification', async (req, res) => {
         req.flash('success', "Your ticket has been purchased successfully and sent to your mail address")
         res.redirect('/#Ticket')
       } else {
-        students.payment_status = req.query.status;
-        cancelledPayment(student.student_email, student.full_name, domain);
+        students.payment_status = req.query.status || 'Failed';
         await students.update();
+        cancelledPayment(student.student_email, student.full_name, domain);
         req.flash('danger', "Your ticket payment was not successful. Please try again")
         res.redirect('/#Ticket')
       }
     })
     .catch(console.log);
 })
-// ticketEmail("Walid Adebayo", "Apantaku Paul Olamiposi", "e616-60b8-4a0e-48bb", "nasltes.onrender.com");
 
 router.get('/failed/transaction', async (req, res) => {
 
