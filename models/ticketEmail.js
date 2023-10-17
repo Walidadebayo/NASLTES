@@ -54,7 +54,7 @@ function ticketEmail(email, name, ticketId, domain) {
                                     </tr>
                                         <tr>
                                             <td style="padding:0 35px;">
-                                            <h1>From ${name},</h1>
+                                            <h1>Hi ${name},</h1>
                                                 <h3>You've successfully purchased ticket from us</h3>
                                                 <p>Ticket number : ${ticketId}</p>
                                                 </td>
@@ -94,7 +94,7 @@ function ticketEmail(email, name, ticketId, domain) {
           if (error) {
             console.log(error);
           } else {
-            console.log('Email sent');
+            console.log('Email sent: ' + email);
           }
         });
 }

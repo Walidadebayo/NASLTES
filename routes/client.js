@@ -208,7 +208,7 @@ ctx.font = 'bold 40px Arial';
 ctx.fillStyle = '#06aa00';
 ctx.fillText(studentname, 150, 170);
 ctx.font = '30px Arial';
-ctx.fillStyle = '#feaa11';
+ctx.fillStyle = '#1977cc';
 ctx.fillText(`Ticket Number: ${ticketNumber}`, 150, 240);
 
 const img = fs.createWriteStream(`${studentname}_nasltes_ticket.png`);
