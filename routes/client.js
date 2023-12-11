@@ -8,15 +8,15 @@ const axios = require('axios');
 const bookTicketValidators = require('../validators/bookTicketValidator');
 const Student = require('../models/students');
 var randtoken = require("rand-token");
-require('dotenv').config()
 const sendEmail = require('../models/forgetPassword');
+const cancelledPayment = require('../models/cancelledPayment');
+const { createCanvas } = require('canvas');
+const fs = require('fs');
+const dotenv =  require('dotenv')
+dotenv.config()
 const Flutterwave = require('flutterwave-node-v3');
 const flw = new Flutterwave(process.env.FLW_PUBLIC_KEY, process.env.FLW_SECRET_KEY);
 const ticketEmail = require('../models/ticketEmail');
-const cancelledPayment = require('../models/cancelledPayment');
-const { createCanvas } = require('canvas');
-
-const fs = require('fs');
 const router = Router()
 
 router.get('/', index)
@@ -173,6 +173,7 @@ router.get('/transaction/verification', async (req, res) => {
     })
     .catch(console.log);
 })
+// ticketEmail("adebayowalid286@gmail.com", "Walid Adebayo", "2f8e-0bed-08cb-463a", "nasltes.onrender.com");
 
 router.get('/failed/transaction', async (req, res) => {
 
