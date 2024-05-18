@@ -140,6 +140,7 @@ router.get('/ticket/payment/', async (req, res) => {
       })
     })
     .catch(function (error) {
+      res.send(error.data)
       console.log(error);
     });
 })
